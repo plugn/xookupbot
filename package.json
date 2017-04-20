@@ -19,5 +19,8 @@
   "bugs": {
     "url": "https://github.com/plugn/xookupbot/issues"
   },
-  "homepage": "https://github.com/plugn/xookupbot#readme"
+  "homepage": "https://github.com/plugn/xookupbot#readme",
+  "dependencies": {
+    "node-telegram-bot-api": "^0.27.0"
+  }
 }
