@@ -9,24 +9,7 @@ const token = require('./.secret/conf.json').api_token; // 'YOUR_TELEGRAM_BOT_TO
 
 // Create a bot that uses 'polling' to fetch new updates
 const bot = new TelegramBot(token, {polling: true});
-// bot.setWebHook('public-url.com', {
-// 	certificate: 'path/to/crt.pem', // Path to your crt.pem
-// })
-// Matches "/echo [whatever]"
-bot.onText(/\/echo (.+)/, (msg, match) => {
-	// 'msg' is the received Message from Telegram
-	// 'match' is the result of executing the regexp above on the text content
-	// of the message
 
-	const chatId = msg.chat.id;
-const resp = match[1]; // the captured "whatever"
-
-// send back the matched "whatever" to the chat
-bot.sendMessage(chatId, resp);
-});
-
-// Listen for any kind of message. There are different kinds of
-// messages.
 bot.on('message', (msg) => {
 	const chatId = msg.chat.id;
 
@@ -47,7 +30,10 @@ bot.on('message', (msg) => {
 			image.greyscale();
 			// image.print(font, x, y, str);        // print a message on an image
 			image.print(font, 50, 50, cmd.text, 400); // print a message on an image with text wrapped at width
-
+			image.getBuffer(Jimp.MIME_PNG , function(err, buf){
+				console.log('buf PNG', buf);
+				bot.sendPhoto(chatId, buf);
+			}); // save
 			// image.getBuffer(Jimp.MIME_PNG, onBuffer);
 
 

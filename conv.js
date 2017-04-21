@@ -37,13 +37,17 @@ function jpeg2png(image) {
 
 		Jimp.loadFont( Jimp.FONT_SANS_64_WHITE )
 			.then(function (font) {
-				//let image = img.resize(256, 256);            // resize
+				let image = img.resize(256, 256);            // resize
 
 				image.print(font, 50, 50, 'LOUD', 400);
 				// jWrite.call(image, "sm505.png"); // save
 				jBuffer.call(image, Jimp.MIME_PNG , function(err, buf){
-					console.log('buf', buf);
-					
+					console.log('buf PNG', buf);
+
+				}); // save
+				jBuffer.call(image, Jimp.MIME_JPEG , function(err, buf){
+					console.log('buf JPEG', buf);
+
 				}); // save
 			});
 
@@ -58,9 +62,13 @@ function jpeg2png(image) {
 jpeg2png();
 
 function jBuffer (mime, cb) {
+	var that = this;
 	console.log('mime', mime);
 	this.getBuffer(mime, function(err, buffer) {
-		cb (buffer);
+		if (err) throw new Error(err);
+
+		//console.info('buffer', buffer);
+		cb(null,  buffer);
 	});
 
 	return this;
