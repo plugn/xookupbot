@@ -2,23 +2,9 @@ const Jimp = require("jimp");
 const url = require('url');
 const PNG = require("pngjs").PNG;
 const JPEG = require("jpeg-js");
-
 var BMP = require("bmp-js");
 var MIME = require("mime");
-var TinyColor = require("tinycolor2");
-var Resize = require("./resize.js");
-var Resize2 = require("./resize2.js");
-var StreamToBuffer = require("stream-to-buffer");
-var ReadChunk = require("read-chunk");
-var FileType = require("file-type");
-var PixelMatch = require("pixelmatch");
-var EXIFParser = require("exif-parser");
-var ImagePHash = require("./phash.js");
-var BigNumber = require('bignumber.js');
-var URLRegEx = require("url-regex");
-var BMFont = require("load-bmfont");
-var Path = require("path");
-
+var FS = require("fs");
 
 /*
 
@@ -44,14 +30,25 @@ Jimp.read("sm1.jpeg").then(function (lenna) {
 
 function jpeg2png(image) {
 	// let buffer = JPEG.decode(image);
+	
+	console.log('Jimp.MIME_PNG', Jimp.MIME_PNG);
+	
 	Jimp.read("sm1.jpeg").then(function (img) {
-		let obj = img.resize(256, 256)            // resize
-			.quality(60)                 // set JPEG quality
-			.greyscale();                 // set greyscale
 
-		jWrite.call(obj, "sm501.png",
-			function(err,v){console.log('done', v);}
-		); // save
+		Jimp.loadFont( Jimp.FONT_SANS_64_WHITE )
+			.then(function (font) {
+				//let image = img.resize(256, 256);            // resize
+
+				image.print(font, 50, 50, 'LOUD', 400);
+				// jWrite.call(image, "sm505.png"); // save
+				jBuffer.call(image, Jimp.MIME_PNG , function(err, buf){
+					console.log('buf', buf);
+					
+				}); // save
+			});
+
+
+
 	}).catch(function (err) {
 		console.error(err);
 	});
@@ -59,6 +56,15 @@ function jpeg2png(image) {
 }
 
 jpeg2png();
+
+function jBuffer (mime, cb) {
+	console.log('mime', mime);
+	this.getBuffer(mime, function(err, buffer) {
+		cb (buffer);
+	});
+
+	return this;
+};
 
 function jWrite (path, cb) {
 	if ("string" != typeof path)
