@@ -5,6 +5,7 @@ const JPEG = require("jpeg-js");
 var BMP = require("bmp-js");
 var MIME = require("mime");
 var FS = require("fs");
+var FileType = require("file-type");
 
 /*
 
@@ -25,38 +26,52 @@ Jimp.read("sm1.jpeg").then(function (lenna) {
 	console.error(err);
 });
 */
+function getMIMEFromBuffer(buffer, path) {
+	var fileTypeFromBuffer = FileType(buffer);
+	if (fileTypeFromBuffer) {
+		// If FileType returns something for buffer, then return the mime given
+		return fileTypeFromBuffer.mime;
+	}
+	else if (path) {
+		// If a path is supplied, and FileType yields no results, then retry with MIME
+		// Path can be either a file path or a url
+		return MIME.lookup(path)
+	} else {
+		return null;
+	}
+}
 
-
+let imgUrlDefault = "https://upload.wikimedia.org/wikipedia/commons/0/01/Bot-Test.jpg";
 
 function jpeg2png(image) {
 	// let buffer = JPEG.decode(image);
 	
-	console.log('Jimp.MIME_PNG', Jimp.MIME_PNG);
-	
-	Jimp.read("sm1.jpeg").then(function (img) {
+	// console.log('Jimp.MIME_PNG', Jimp.MIME_PNG);
+
+	Jimp.read(imgUrlDefault).then(function (image) {
 
 		Jimp.loadFont( Jimp.FONT_SANS_64_WHITE )
 			.then(function (font) {
-				let image = img.resize(256, 256);            // resize
+				//let image = img.resize(256, 256);            // resize
 
 				image.print(font, 50, 50, 'LOUD', 400);
 				// jWrite.call(image, "sm505.png"); // save
-				jBuffer.call(image, Jimp.MIME_PNG , function(err, buf){
-					console.log('buf PNG', buf);
+				// jBuffer.call(image, Jimp.MIME_PNG , function(err, buf){
+				image.getBuffer(Jimp.MIME_PNG , function(err, buf){
+					let mime = getMIMEFromBuffer(buf);
+					console.log('buf PNG mime:',mime, 'buf:', buf);
 
 				}); // save
-				jBuffer.call(image, Jimp.MIME_JPEG , function(err, buf){
-					console.log('buf JPEG', buf);
+				// jBuffer.call(image, Jimp.MIME_JPEG , function(err, buf){
+				image.getBuffer(Jimp.MIME_JPEG , function(err, buf){
+					let mime = getMIMEFromBuffer(buf);
+					console.log('buf JPEG mime:', mime, 'buf:', buf);
 
 				}); // save
 			});
-
-
-
 	}).catch(function (err) {
 		console.error(err);
 	});
-
 }
 
 jpeg2png();

@@ -3,15 +3,83 @@ const Jimp = require("jimp");
 const url = require('url');
 const PNG = require("pngjs").PNG;
 const JPEG = require("jpeg-js");
+var FS = require("fs");
+var MIME = require("mime");
+var FileType = require("file-type");
 
 // replace the value below with the Telegram token you receive from @BotFather
 const token = require('./.secret/conf.json').api_token; // 'YOUR_TELEGRAM_BOT_TOKEN';
+// if (data instanceof stream.Stream) {}
+function getMIMEFromBuffer(buffer, path) {
+	var fileTypeFromBuffer = FileType(buffer);
+	if (fileTypeFromBuffer) {
+		// If FileType returns something for buffer, then return the mime given
+		return fileTypeFromBuffer.mime;
+	}
+	else if (path) {
+		// If a path is supplied, and FileType yields no results, then retry with MIME
+		// Path can be either a file path or a url
+		return MIME.lookup(path)
+	} else {
+		return null;
+	}
+}
+
 
 // Create a bot that uses 'polling' to fetch new updates
 const bot = new TelegramBot(token, {polling: true});
+let imgUrlDefault = "https://upload.wikimedia.org/wikipedia/commons/0/01/Bot-Test.jpg";
+
+
 
 bot.on('message', (msg) => {
-	const chatId = msg.chat.id;
+	let chatId = msg.chat.id;
+
+
+	Jimp.read(imgUrlDefault).then(function (image) {
+
+		Jimp.loadFont( Jimp.FONT_SANS_64_WHITE )
+		.then(function (font) {
+			//let image = img.resize(256, 256);            // resize
+
+			// image.print(font, 50, 50, 'LOUD', 400);
+			image.getBuffer(Jimp.MIME_PNG , function(err, buf){
+				var stream = FS.createWriteStream('MYIMAGE.png');
+				stream.on("open", function(fh) {
+					// stream.write(buf);
+					bot.sendPhoto(chatId, stream)
+					stream.end();
+
+				}).on("error", function(err) {
+					return throwError.call(that, err, cb);
+				});
+				stream.on("finish", function(fh) {
+					let mime = getMIMEFromBuffer(buf);
+					stream.end();
+
+					console.log('buf PNG mime:',mime, 'buf:', buf);
+					//bot.sendPhoto(chatId, stream);
+					//return cb.call(that, null, that);
+				});
+
+
+
+
+			});
+
+			// image.getBuffer(Jimp.MIME_JPEG , function(err, buf){
+			// 	let mime = getMIMEFromBuffer(buf);
+			// 	console.log('buf JPEG mime:', mime, 'buf:', buf);
+			//
+			// });
+		});
+	}).catch(function (err) {
+		console.error('Jimp.read() catch err', err);
+	});
+});
+
+bot.on('channel_post', (msg) => {
+	let chatId = msg.chat.id;
 
 	// send a message to the chat acknowledging receipt of their message
 	bot.sendMessage(chatId, 'Received your message #' + JSON.stringify(msg) + 'chatId:' + chatId);
@@ -45,7 +113,6 @@ bot.on('message', (msg) => {
 		console.error('Jimp error', err);
 	});
 });
-let imgUrlDefault = "https://upload.wikimedia.org/wikipedia/commons/0/01/Bot-Test.jpg";
 function parseReq(msg) {
 	if (!msg) { return; }
 	let text = msg;
@@ -59,9 +126,4 @@ function parseReq(msg) {
 	let result = {url: imgUrl, text: text};
 	console.log('result', result);
 	return result;
-}
-
-function jpeg2png(image) {
-	let buffer = JPEG.decode(image);
-
 }
