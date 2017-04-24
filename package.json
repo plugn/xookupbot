@@ -25,5 +25,8 @@
   "dependencies": {
     "jimp": "^0.2.27",
     "node-telegram-bot-api": "^0.27.0"
+  },
+  "devDependencies": {
+    "svg2png": "^4.1.1"
   }
 }

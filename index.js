@@ -3,6 +3,22 @@ const Jimp = require("jimp");
 const url = require('url');
 const PNG = require("pngjs").PNG;
 const JPEG = require("jpeg-js");
+const svg2png = require('svg2png');
+const FS = require("pn/fs");
+
+
+/*
+
+FS.readFile('_img/media-queries.svg')
+	.then(svg2png)
+	.then(function (buffer) {
+		FS.writeFile('_img/mq.png', buffer)
+			.then(data => console.log('data: ', data))
+			.catch(e => console.error(e))
+	})
+	.catch(e => console.error(e));
+*/
+
 
 // replace the value below with the Telegram token you receive from @BotFather
 const token = require('./.secret/conf.json').api_token; // 'YOUR_TELEGRAM_BOT_TOKEN';
@@ -17,22 +33,33 @@ bot.on('message', (msg) => {
 	bot.sendMessage(chatId, 'Received your message #' + JSON.stringify(msg) + 'chatId:' + chatId);
 
 	let fontL = Jimp.FONT_SANS_64_WHITE;
+	let fontB = Jimp.FONT_SANS_64_BLACK;
 	let cmd = parseReq(msg.text);
+	let cmdObj;
+	try {
+		cmdObj = JSON.parse(cmd);
+	} catch (e) {
+		cmdObj = {}
+	}
+
+	let svgURL = 'https://upload.wikimedia.org/wikipedia/commons/thumb/8/84/Example.svg/1200px-Example.svg.png';
+
+
+
 	Jimp.read(cmd.url).then(function (image) {
 
-		function onBuffer(err, buffer) {
-			if (err) throw err;
-			console.log('onBuffer', buffer);
-			bot.sendPhoto(chatId, buffer);
-		}
-
-		Jimp.loadFont( fontL ).then(function (font) { // load font from .fnt file
-			image.greyscale();
+		Jimp.loadFont( fontB ).then(function (font) { // load font from .fnt file
+			// image.greyscale();
 			// image.print(font, x, y, str);        // print a message on an image
 			image.print(font, 50, 50, cmd.text, 400); // print a message on an image with text wrapped at width
-			image.getBuffer(Jimp.MIME_PNG , function(err, buf){
+			image.getBuffer(Jimp.MIME_PNG, function(err, buf){
 				console.log('buf PNG', buf);
-				bot.sendPhoto(chatId, buf);
+
+				// bot.sendSticker(chatId, svgURL);
+				let options = {emoji: cmdObj.emoji || ''};
+				console.log('options: ', options);
+				
+				bot.sendSticker(chatId, buf, options);
 			}); // save
 			// image.getBuffer(Jimp.MIME_PNG, onBuffer);
 
@@ -61,7 +88,3 @@ function parseReq(msg) {
 	return result;
 }
 
-function jpeg2png(image) {
-	let buffer = JPEG.decode(image);
-
-}
