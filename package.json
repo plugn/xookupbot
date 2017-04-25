@@ -24,7 +24,9 @@
   "homepage": "https://github.com/plugn/xookupbot#readme",
   "dependencies": {
     "jimp": "^0.2.27",
-    "node-telegram-bot-api": "^0.27.0"
+    "node-telegram-bot-api": "^0.27.0",
+    "svg.js": "^2.6.1",
+    "svgdom": "0.0.10"
   },
   "devDependencies": {
     "svg2png": "^4.1.1"
