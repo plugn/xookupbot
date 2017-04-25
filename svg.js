@@ -10,7 +10,7 @@ FS.readFile(svgURL)
 		svg2png(srcBuffer, { filename: path.resolve(__dirname, svgURL) })
 			.then(function (buffer) {
 				FS.writeFile(svgURL+'.png', buffer)
-					.then(data => console.log('data: ', data))
+					.then(data => console.log('data: ', buffer))
 					.catch(e => console.error(e))
 			})
 			.catch(e => console.error(e));
