@@ -2,3 +2,5 @@ node_modules/
 .secret/
 *.pem
 .idea/
+_img/*.png
+_img/*.pdf
