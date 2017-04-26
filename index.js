@@ -3,7 +3,8 @@ const url = require('url');
 let imgproc = require('./imgproc');
 
 // replace the value below with the Telegram token you receive from @BotFather
-const token = require('./.secret/conf.json').api_token; // 'YOUR_TELEGRAM_BOT_TOKEN';
+//const token = require('./.secret/conf.json').api_token; // 'YOUR_TELEGRAM_BOT_TOKEN';
+const token = process.env.TBOT_TOKEN;
 
 // Create a bot that uses 'polling' to fetch new updates
 const bot = new TelegramBot(token, {polling: true});
