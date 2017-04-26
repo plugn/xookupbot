@@ -12,7 +12,7 @@ module.exports = function svg2buf (options) {
 	document.documentElement.textContent = '';
 
 	// create svg.js instance
-	let draw = SVG(document.documentElement).size(400, 400);
+	let draw = SVG(document.documentElement).size(300, 300);
 	let q = options.text || options.q || 'Какой-то умный \n человек \nпридумал\n  SVG\n  и это \nЗБС ';
 	let text = draw.text(q)
 		.font({
