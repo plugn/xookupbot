@@ -1,10 +1,5 @@
 const TelegramBot = require('node-telegram-bot-api');
-const Jimp = require("jimp");
 const url = require('url');
-const PNG = require("pngjs").PNG;
-const JPEG = require("jpeg-js");
-const svg2png = require('svg2png');
-const FS = require("pn/fs");
 let imgproc = require('./imgproc');
 
 // replace the value below with the Telegram token you receive from @BotFather
