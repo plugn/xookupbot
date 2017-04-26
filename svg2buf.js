@@ -1,7 +1,10 @@
+const path = require('path');
+
 let window = require('svgdom');
 	// returns a window with a document and an svg root node
-	window.setFontDir('./fonts')
-		.setFontFamilyMappings({'Open Sans': 'OpenSans-regular.ttf'})
+
+	window.setFontDir(path.resolve('fonts'))
+		.setFontFamilyMappings({'Open Sans': 'OpenSans-Regular.ttf'})
 		.preloadFonts();
 const SVG      = require('svg.js')(window);
 
