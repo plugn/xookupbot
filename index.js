@@ -20,7 +20,11 @@ bot.on('message', (msg) => {
 	}
 	let cmd = parseReq(msgText);
 
-	imgproc(cmd.url, {text: cmd.text}, onImgBuffer);
+	imgproc(cmd.url, {text: cmd.text}, onImgBuffer, onErrorCallback);
+
+	function onErrorCallback (errMsg) {
+		bot.sendMessage(chatId, 'Image processing error.\n'+ errMsg);
+	}
 
 
 });

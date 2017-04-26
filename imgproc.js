@@ -2,16 +2,13 @@ const sharp = require('sharp');
 const Jimp = require('jimp');
 const svg2buf  = require("./svg2buf");
 
-
-let imgURL = 'https://avatars1.githubusercontent.com/u/5002453?v=3&s=480';
-
-module.exports = function imgproc (bgURL, overlay, callback) {
-
+module.exports = function imgproc (bgURL, overlay, callback, errorCallback) {
 
 	Jimp.read(bgURL).then(function (image) {
 		image.getBuffer(Jimp.AUTO, onBuffer);
 	}).catch(function (err) {
 		console.error(err);
+		errorCallback('try message format:\n\n{URL}\nтекст\nтекст2');
 	});
 
 	function onBuffer(err, buffer) {
@@ -34,7 +31,4 @@ module.exports = function imgproc (bgURL, overlay, callback) {
 			.then(callback)
 	}
 };
-// sharp('_img/text1.svg')
-// 	// .resize(600, 600)
-// 	.toFile('_img/text1.png', function(err) {});
 
