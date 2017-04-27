@@ -1,0 +1,8 @@
+{
+	"name": "xookupbot",
+	"description": "telegram bot",
+	"repository": "https://github.com/plugn/xookupbot",
+	"logo": "http://node-js-sample.herokuapp.com/node.svg",
+	"keywords": ["node", "libvips", "heroku"],
+	"image": "heroku/nodejs"
+}
