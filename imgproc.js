@@ -25,7 +25,7 @@ module.exports = function imgproc (bgURL, overlay, callback, errorCallback) {
 		sharp(buffer)
 			.crop(512, 512)
 			// .max()
-			.overlayWith(svgBuf, {gravity: sharp.gravity.northeast})
+			.overlayWith(svgBuf, {gravity: sharp.gravity.northwest})
 			.png()
 			.toBuffer()
 			.then(callback)

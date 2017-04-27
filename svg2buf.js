@@ -21,7 +21,7 @@ module.exports = function svg2buf (options) {
 		.font({
 			family: 'Open Sans',
 			size: 36
-		}).fill({ color: options.color || '#00DD88' });
+		}).fill({ color: options.color || '#222222' });
 
 	text.leading(1.5).move(20, 20);
 
