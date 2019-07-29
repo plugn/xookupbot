@@ -4,7 +4,7 @@
   "description": "first telegram bot ",
   "main": "index.js",
   "scripts": {
-    "start": "cross-env TBOT_TOKEN=980144418:AAFZzdcuFo7OY54jCcIlgfwYry0bPvMBHXs node index",
+    "start": "node index",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
