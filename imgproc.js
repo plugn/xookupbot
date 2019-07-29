@@ -3,7 +3,7 @@ const Jimp = require('jimp');
 const svg2buf  = require("./svg2buf");
 
 module.exports = function imgproc (bgURL, overlay, callback, errorCallback) {
-
+console.log('imgproc overlay', overlay)
 	Jimp.read(bgURL).then(function (image) {
 		image.getBuffer(Jimp.AUTO, onBuffer);
 	}).catch(function (err) {
@@ -25,7 +25,7 @@ module.exports = function imgproc (bgURL, overlay, callback, errorCallback) {
 		sharp(buffer)
 			.resize(512, 512)
 			// .max()
-			.overlayWith(svgBuf, {gravity: sharp.gravity.northwest})
+			.overlayWith(svgBuf, { gravity: sharp.gravity[overlay.gravity || 'northwest']})
 			.png()
 			.toBuffer()
 			.then(callback)

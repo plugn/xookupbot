@@ -15,12 +15,12 @@ module.exports = function svg2buf (options) {
 	document.documentElement.textContent = '';
 
 	// create svg.js instance
-	let draw = SVG(document.documentElement).size(300, 300);
+	let draw = SVG(document.documentElement).size(512, 512);
 	let q = options.text || options.q || 'Какой-то умный \n человек \nпридумал\n  SVG\n  и это \nЗБС ';
 	let text = draw.text(q)
 		.font({
 			family: 'Open Sans',
-			size: 36
+			size: options.size || 36
 		}).fill({ color: options.color || '#222222' });
 
 	text.leading(1.5).move(20, 20);
