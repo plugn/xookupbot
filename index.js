@@ -1,7 +1,9 @@
 const TelegramBot = require('node-telegram-bot-api');
 const url = require('url');
 let imgproc = require('./imgproc');
-const token = process.env.TBOT_TOKEN || require('./.secret/conf.json').api_token;
+const token = process.env.TBOT_TOKEN || '356629590:AAHbRjFqQ7VnQdezHDrPEOYbjVv_M7UmgD0';
+// || require('./.secret/conf.json').api_token;
+console.log('tkn ', token);
 
 // Create a bot that uses 'polling' to fetch new updates
 const bot = new TelegramBot(token, {polling: true});

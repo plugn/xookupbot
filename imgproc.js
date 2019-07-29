@@ -23,7 +23,7 @@ module.exports = function imgproc (bgURL, overlay, callback, errorCallback) {
 
 		console.log('svgBUF', svgBuf);
 		sharp(buffer)
-			.crop(512, 512)
+			.resize(512, 512)
 			// .max()
 			.overlayWith(svgBuf, {gravity: sharp.gravity.northwest})
 			.png()

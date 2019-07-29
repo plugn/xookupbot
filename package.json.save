@@ -4,7 +4,7 @@
   "description": "first telegram bot ",
   "main": "index.js",
   "scripts": {
-    "start": "TBOT_TOKEN=356629590:AAHbRjFqQ7VnQdezHDrPEOYbjVv_M7UmgD0 node index",
+    "start": "node index.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -22,10 +22,9 @@
   },
   "homepage": "https://github.com/plugn/xookupbot#readme",
   "dependencies": {
-    "cross-env": "^5.2.0",
-    "jimp": "^0.5.2",
+    "jimp": "^0.5",
     "node-telegram-bot-api": "^0.27.0",
-    "sharp": "^0.22",
+    "sharp": "^0.17.3",
     "svg.js": "^2.6.1",
     "svgdom": "0.0.10"
   },
